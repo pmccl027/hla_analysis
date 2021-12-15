@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[7]:
+# In[2]:
 
 
 import pysam
@@ -33,15 +33,22 @@ argparser.add_argument('-s', '--seed', metavar = 'random seed', dest = 'seed', r
 def count_variants(vcf_name, chromosome, start, end):
     with pysam.VariantFile(vcf_name) as vcf:
         count = 0
-        # count_af1 = 0
-        # count_af5 = 0
+        count_af1 = 0
+        count_af5 = 0
         count_ac1 = 0
         for variant in vcf.fetch(chromosome, start, end):
             if 'PASS' not in variant.filter:
                 continue
             if not "AC" in variant.info:
                 continue
-                
+                            
+            assert len(variant.info["AF"]) == 1
+            af = variant.info["AF"][0]
+            if af > 0.01:
+                count_af1 += 1
+            if af > 0.05:
+                count_af5 += 1
+            
             assert len(variant.info["AC"]) == 1
             ac = variant.info["AC"][0]
             if ac == 1:
@@ -49,8 +56,7 @@ def count_variants(vcf_name, chromosome, start, end):
                 
             count = count + 1
         
-        return (count, count_ac1)
-        #return (count, count_af1, count_af5, count_ac1)
+        return (count, count_af1, count_af5, count_ac1)
 
 
 # In[2]:
@@ -66,8 +72,6 @@ if __name__ == '__main__':
         with pysam.TabixFile(vcf_name) as vcf:
             for chrom in vcf.contigs:
                 chrom2vcf[chrom] = vcf_name
-#     print(len(chrom2vcf))
-#     print(chrom2vcf['chr13'])
     
     hg19 = pybedtools.chromsizes('hg19')
     x = BedTool()
@@ -80,7 +84,7 @@ if __name__ == '__main__':
         pos2 = int(row[2])
         print(chr_name, pos1, pos2)
     
-        random_vcf_name = print(chrom2vcf[chr_name])
+        random_vcf_name = chrom2vcf[chr_name]
         count = count_variants(random_vcf_name, chr_name, pos1, pos2)
         # count, count_af1, count_af5, count_ac1 = count_variants(...)
         print(count)
@@ -88,16 +92,4 @@ if __name__ == '__main__':
     
     
     
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
 
