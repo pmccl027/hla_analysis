@@ -23,9 +23,8 @@ argparser.add_argument('-s', '--seed', metavar = 'random seed', dest = 'seed', r
 
 # In[3]:
 
-
-# How to make this function to count and return the following numbers?
-# 1. total count (already here)
+# count_variants function to get:
+# 1. total count 
 # 2. total count of variants with allele frequency >0.01
 # 3. total count of variants with allele frequency >0.05
 # 4. total count of singleton variants i.e. variants with allele count (AC) equal to 1
