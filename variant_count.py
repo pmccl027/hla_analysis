@@ -81,7 +81,7 @@ if __name__ == '__main__':
         chr_name = row[0]
         pos1 = int(row[1])
         pos2 = int(row[2])
-        print(chr_name, pos1, pos2)
+        # print(chr_name, pos1, pos2)
     
         random_vcf_name = chrom2vcf[chr_name]
         count = count_variants(random_vcf_name, chr_name, pos1, pos2)
