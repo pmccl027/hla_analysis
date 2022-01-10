@@ -18,7 +18,7 @@ argparser.add_argument('-i', '--in-vcf', metavar = 'file', dest = 'vcf_names', r
 argparser.add_argument('-l', '--length', metavar = 'interval length', dest = 'length', required = True, type = int, help = 'Length of genomic intervals to be generated')
 argparser.add_argument('-n', '--n-intervals', metavar = 'number of intervals', dest = 'n_intervals', required = True, type = int, help = 'Number of genomic intervals to be generated')
 argparser.add_argument('-s', '--seed', metavar = 'random seed', dest = 'seed', required = True, type = int, help = 'Random seed parameter for randomized list')
-
+argparser.add_argument('-o', '--output', metavar = 'output file', dest = 'output_file', required = True, help = 'Output file name')
 
 
 # In[3]:
@@ -86,9 +86,9 @@ if __name__ == '__main__':
         random_vcf_name = chrom2vcf[chr_name]
         count = count_variants(random_vcf_name, chr_name, pos1, pos2)
         # count, count_af1, count_af5, count_ac1 = count_variants(...)
-        print(count)
-        counts.append(count)
-    
-    
-    
 
+        #print(count)
+        counts.append(count)
+
+        with open(args.output_file, "wt") as output_file:
+            output_file.write("{}\n".format("\t".join(str(x) for x in counts)))
