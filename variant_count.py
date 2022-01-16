@@ -90,5 +90,5 @@ if __name__ == '__main__':
         #print(count)
         counts.append(count)
 
-        with open(args.output_file, "wt") as output_file:
-            output_file.write("{}\n".format("\t".join(str(x) for x in counts)))
+    with open(args.output_file, "wt") as output_file:
+        output_file.write("{}\n".format("\n".join(str(x) for x in counts)))
