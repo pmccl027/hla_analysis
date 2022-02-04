@@ -40,6 +40,8 @@ def count_variants(vcf_name, chromosome, start, end):
                 continue
             if not "AC" in variant.info:
                 continue
+            if len(variant.alts[0]) != 1:
+                continue
                             
             assert len(variant.info["AF"]) == 1
             af = variant.info["AF"][0]
@@ -55,7 +57,7 @@ def count_variants(vcf_name, chromosome, start, end):
                 
             count = count + 1
         
-        return (count, count_af1, count_af5, count_ac1)
+        return count, count_af1, count_af5, count_ac1
 
 
 # In[2]:
@@ -73,6 +75,10 @@ if __name__ == '__main__':
                 chrom2vcf[chrom] = vcf_name
     
     hg19 = pybedtools.chromsizes('hg19')
+    chroms = [f'chr{i}' for i in range(1,23)] + ['chrX']
+    for chrom in list(hg19.keys()):
+        if chrom not in chroms:
+            del hg19[chrom]
     x = BedTool()
     random_list = x.random(l=args.length, n=args.n_intervals, genome='hg19', seed=args.seed) # check random seed paramters
     
