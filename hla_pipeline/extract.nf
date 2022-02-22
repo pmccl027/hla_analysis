@@ -3,7 +3,7 @@ process Extract_HLA {
 
 	input:
 	//file cram from Channel.fromPath("/lustre03/project/rrg-vmooser/dtaliun/BQC19_Globus/Release5_DEC_2021/BQC10000-BQC10099/cram/*.cram")
-	file cram from Channel.fromPath("/lustre03/project/rrg-vmooser/dtaliun/BQC19_Globus/Release5_DEC_2021/BQC10000-BQC10099/cram/*99*.cram")
+	file cram from Channel.fromPath("${params.path}*99*.cram")
 	
 	output:
 	file "*extracted.bam" into extracted
