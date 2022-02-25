@@ -2,7 +2,7 @@
 process Extract_HLA {
 
 	input:
-	tuple file (bam), file(bam_index) from Channel.fromPath("${params.path}*9.*.cram").map{ bam -> [ bam, bam + (bam.getExtension() == "bam" ? ".bai" : ".crai") ] }
+	tuple file (bam), file(bam_index) from Channel.fromPath("${params.path}*99.*.cram").map{ bam -> [ bam, bam + (bam.getExtension() == "bam" ? ".bai" : ".crai") ] }
 	
 	output:
 	file "*extracted.bam" into extracted
@@ -27,9 +27,11 @@ process Extract_HLA {
 
 	# all merged
 	samtools merge ${bam.simpleName}_extracted.bam all.1.bam all.2.bam all.3.bam hla.mapped_only.bam
+	# index new extracted file
+	samtools index ${bam.simpleName}_extracted.bam
 
 	# compute coverage
-	samtools coverage -q 10 -Q 10 -r chr6:25000000-35000000 *_extracted.bam | cut -f 4 > ${bam.simpleName}_coverage.txt
+	samtools coverage -q 10 -Q 10 -r chr6:25000000-35000000 ${bam.simpleName}_extracted.bam | cut -f 4- > ${bam.simpleName}_coverage.txt
 
 	"""
 }
