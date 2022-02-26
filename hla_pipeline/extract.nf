@@ -31,7 +31,24 @@ process Extract_HLA {
 	samtools index ${bam.simpleName}_extracted.bam
 
 	# compute coverage
-	samtools coverage -q 10 -Q 10 -r chr6:25000000-35000000 ${bam.simpleName}_extracted.bam | cut -f 4- > ${bam.simpleName}_coverage.txt
+	samtools coverage -q 10 -Q 10 -r chr6:25000000-35000000 ${bam.simpleName}_extracted.bam | cut -f 4- > ${bam.simpleName}_coverage_unlabelled.txt
+	# add sample name column to coverage file
+	echo -e "sample\n${bam.simpleName}" > sample_column.txt
+	paste sample_column.txt ${bam.simpleName}_coverage_unlabelled.txt > ${bam.simpleName}_coverage.txt
 
+	"""
+}
+
+Process Merge_Coverage {
+	input:
+	file(coverage_files) from coverage
+	
+	output:
+	file "all_coverage.txt" into coverage	
+	
+	"""
+	cat ${coverage_files} | grep -vw "^sample" > no_header.txt
+	cat ${coverage_files} | head -n1 > only_header.txt
+	cat only_header.txt no_header.txt > all_coverage.txt
 	"""
 }
