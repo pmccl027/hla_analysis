@@ -2,7 +2,7 @@
 process Extract_HLA {
 
 	input:
-	tuple file (bam), file(bam_index) from Channel.fromPath("${params.path}*99.*.cram").map{ bam -> [ bam, bam + (bam.getExtension() == "bam" ? ".bai" : ".crai") ] }
+	tuple file (bam), file(bam_index) from Channel.fromPath("${params.path}*9?.*.cram").map{ bam -> [ bam, bam + (bam.getExtension() == "bam" ? ".bai" : ".crai") ] }
 	
 	output:
 	file "*extracted.bam" into extracted
@@ -39,16 +39,18 @@ process Extract_HLA {
 	"""
 }
 
-Process Merge_Coverage {
+process Merge_Coverage {
 	input:
 	file(coverage_files) from coverage
 	
 	output:
-	file "all_coverage.txt" into coverage	
+	file "all_coverage.txt" into merged_coverage
+	
+	publishDir "merged_coverage/", pattern: "all_coverage.txt", mode: "copy"	
 	
 	"""
 	cat ${coverage_files} | grep -vw "^sample" > no_header.txt
 	cat ${coverage_files} | head -n1 > only_header.txt
-	cat only_header.txt no_header.txt > all_coverage.txt
+	cat only_header.txt no_header.txt >> all_coverage.txt
 	"""
 }
