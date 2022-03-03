@@ -41,7 +41,7 @@ process Extract_HLA {
 
 process Merge_Coverage {
 	input:
-	file(coverage_files) from coverage
+	file(coverage_files) from coverage.collect()
 	
 	output:
 	file "all_coverage.txt" into merged_coverage
