@@ -2,7 +2,7 @@
 process Extract_HLA {
 
 	input:
-	tuple file (bam), file(bam_index) from Channel.fromPath("${params.path}*9?.*.cram").map{ bam -> [ bam, bam + (bam.getExtension() == "bam" ? ".bai" : ".crai") ] }
+	tuple file (bam), file(bam_index) from Channel.fromPath("${params.path}*.cram").map{ bam -> [ bam, bam + (bam.getExtension() == "bam" ? ".bai" : ".crai") ] }
 	
 	output:
 	file "*extracted.bam" into extracted
