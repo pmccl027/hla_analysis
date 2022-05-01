@@ -11,9 +11,12 @@ process HLA_typing {
 
 	"""
 	
-	${params.HLA_path}/HLA-LA.pl --BAM ${bam} --graph ${params.graph} --sample sample1 --workingDir /home/pmccl/scratch/HLA-LA
+	${params.HLA_path}/HLA-LA.pl --BAM ${bam} --graph ${params.graph} --sample sample --workingDir . > ${bam.getSimpleName()}.log
+	
+	cp -r sample/hla ${bam.getSimpleName()}
+        cp ${bam.getSimpleName()}.log ${bam.getSimpleName()}
      
-	zip -r ${bam.simpleName}.zip ${params.out_path}sample1
+	zip -r ${bam.getSimpleName()}.zip ${bam.getSimpleName()}
 
 	"""
 }
