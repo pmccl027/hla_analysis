@@ -33,4 +33,15 @@ process HLA_typing {
 process merge {
 	input:
 	file(bestguess_files) from bestguess.collect()
+
+	output:
+	file "merged_bestguess.txt" into merged_bestguess
+
+	publishDir "merged_bestguess/", pattern: "merged_bestguess.txt", mode: "copy"	
+
+	"""
+	cat ${bestguess_files} | grep -vw "^Sample" > no_header.txt
+	cat ${bestguess_files} | head -n1 > only_header.txt
+	cat only_header.txt no_header.txt >> merged_bestguess.txt
+	"""
 }
