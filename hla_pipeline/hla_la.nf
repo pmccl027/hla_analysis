@@ -21,7 +21,7 @@ process HLA_typing {
 	sed -i 's/^/Sample\t/' header.txt
 	
 	tail -n+2 sample/hla/R1_bestguess_G.txt > data.txt
-	sed -i 's/^/${bam.getSimpleName()}/' data.txt
+	sed -i 's/^/${bam.getSimpleName()}\t/' data.txt
 	
 	cat header.txt data.txt > R1_bestguess_G.txt
      
