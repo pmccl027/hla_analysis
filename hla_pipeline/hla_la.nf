@@ -18,10 +18,10 @@ process HLA_typing {
         cp ${bam.getSimpleName()}.log ${bam.getSimpleName()}
 	
 	head -n1 sample/hla/R1_bestguess_G.txt > header.txt
-	sed -i s/^/Sample\t/ header.txt
+	sed -i 's/^/Sample\t/' header.txt
 	
 	tail -n+2 sample/hla/R1_bestguess_G.txt > data.txt
-	sed -i s/^/${bam.getSimpleName()}/ data.txt
+	sed -i 's/^/${bam.getSimpleName()}/' data.txt
 	
 	cat header.txt data.txt > R1_bestguess_G.txt
      
