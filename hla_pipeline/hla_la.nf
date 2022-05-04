@@ -2,7 +2,7 @@
 process HLA_typing {
 
 	input:
-	tuple file (bam), file(bam_index) from Channel.fromPath("extracted/*4889*.bam").map{ bam -> [ bam, bam + (bam.getExtension() == "bam" ? ".bai" : ".crai") ] }
+	tuple file (bam), file(bam_index) from Channel.fromPath("extracted/*.bam").map{ bam -> [ bam, bam + (bam.getExtension() == "bam" ? ".bai" : ".crai") ] }
 	
 	output:
 	file "*.zip" into output
