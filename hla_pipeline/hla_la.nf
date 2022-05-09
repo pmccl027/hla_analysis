@@ -1,5 +1,9 @@
 
 process HLA_typing {
+	cache "lenient"
+	errorStrategy { sleep(Math.pow(2, task.attempt) * 200 as long); return "retry" }
+	maxRetries 3
+	scratch true
 
 	input:
 	tuple file (bam), file(bam_index) from Channel.fromPath("extracted/*.bam").map{ bam -> [ bam, bam + (bam.getExtension() == "bam" ? ".bai" : ".crai") ] }
@@ -31,6 +35,8 @@ process HLA_typing {
 }
 
 process merge {
+	cache "lenient"
+
 	input:
 	file(bestguess_files) from bestguess.collect()
 
