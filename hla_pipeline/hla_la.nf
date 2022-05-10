@@ -6,7 +6,7 @@ process HLA_typing {
 	
 	output:
 	file "*.zip" into output
-	file("R1_bestguess_G.txt") into bestguess
+	file("R1_bestguess_G_*.txt") into bestguess
     
 	publishDir "output/", pattern: "*.zip", mode: "copy"
 
@@ -23,7 +23,7 @@ process HLA_typing {
 	tail -n+2 sample/hla/R1_bestguess_G.txt > data.txt
 	sed -i 's/^/${bam.getSimpleName()}\t/' data.txt
 	
-	cat header.txt data.txt > R1_bestguess_G.txt
+	cat header.txt data.txt > R1_bestguess_G_${bam.getSimpleName()}.txt
      
 	zip -r ${bam.getSimpleName()}.zip ${bam.getSimpleName()}
 
