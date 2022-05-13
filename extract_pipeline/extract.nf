@@ -9,7 +9,7 @@ process Extract_HLA {
 	tuple file (bam), file(bam_index) from Channel.fromPath("${params.infolder}*.cram").map{ bam -> [ bam, bam + (bam.getExtension() == "bam" ? ".bai" : ".crai") ] }
 	
 	output:
-	file "*extracted.bam" into extracted
+	file "*extracted.bam" into "${params.outfolder}"
 	file "*coverage.txt" into coverage
 
 	publishDir "extracted/", pattern: "*extracted.bam", mode: "copy"
