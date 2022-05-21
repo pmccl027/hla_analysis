@@ -1,5 +1,6 @@
 
 process Extract_HLA {
+	scratch true
 	cache "lenient"
 	errorStrategy { sleep(Math.pow(2, task.attempt) * 200 as long); return "retry" }
 	maxRetries 3
@@ -9,7 +10,7 @@ process Extract_HLA {
 	tuple file (bam), file(bam_index) from Channel.fromPath("${params.infolder}*.cram").map{ bam -> [ bam, bam + (bam.getExtension() == "bam" ? ".bai" : ".crai") ] }
 	
 	output:
-	file "*extracted.bam" into "${params.outfolder}"
+	file "*extracted.bam" into extracted
 	file "*coverage.txt" into coverage
 
 	publishDir "extracted/", pattern: "*extracted.bam", mode: "copy"
