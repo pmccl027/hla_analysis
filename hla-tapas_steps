@@ -15,7 +15,6 @@ bcftools view -S sample_list.txt -r chr6:25000000-35000000 -fPASS -i 'F_MISSING<
 # convert to PLINK format
 plink --vcf BQC19.chr6.HLAregion.snps --set-missing-var-ids @:# --make-bed --out BQC19.chr6.HLAregion.snps 
 
-
 ## MakeReference to create reference panel
 sbatch --account=<acct> --time=70:00:00 --ntasks=1 --mem-per-cpu=30G --wrap="python -m MakeReference --variants BQC19.chr6.HLAregion.snps --chped BQC19_Ggroup.chped --hg 38 --out MakeReference/Ggroup_out/Ggroup.ref --dict-AA MakeReference/data/hg38/HLA_DICTIONARY_AA.hg38.imgt3320.Ggroup --dict-SNPS MakeReference/data/hg3
 8/HLA_DICTIONARY_SNPS.hg38.imgt3320.Ggroup --phasing --save-intermediates --mem='30g' "
