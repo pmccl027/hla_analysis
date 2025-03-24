@@ -1,4 +1,4 @@
-
+# requires StdEnv/2020 & nextflow/22.10.8
 process HLA_typing {
 	cache "lenient"
 	errorStrategy { sleep(Math.pow(2, task.attempt) * 200 as long); return "retry" }
